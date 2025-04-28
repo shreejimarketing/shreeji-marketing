@@ -95,7 +95,7 @@ const productCategories = [
   },
   {
     id: 'brands',
-    title: 'Premium Brands',
+    title: 'Custom Product',
     icon: <Package className="w-5 h-5" />,
     items: [
       { id: 'custom', name: 'Request Custom Products' }
