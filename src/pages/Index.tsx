@@ -284,8 +284,8 @@ const features = [
 const featuredProducts = [
   {
     id: 1,
-    title: "Architectural Birch Plywood",
-    description: "Premium grade birch plywood perfect for high-end architectural applications.",
+    title: "Century Plywood",
+    description: "Premium grade century plywood perfect for high-end architectural applications.",
     imageUrl: "/product-birch.jpg",
   },
   {

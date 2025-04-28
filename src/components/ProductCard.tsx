@@ -55,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <span className="border-b border-transparent group-hover/link:border-wood-dark transition-all">
               View Details
             </span>
-            <motion.div
+            <motion.div  
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >

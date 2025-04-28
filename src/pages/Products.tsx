@@ -87,7 +87,7 @@ const Products: React.FC = () => {
           style={{
             transform: `translateY(${scrollY * 0.2}px)`
           }}
-        />
+        /> 
         
         <motion.div  
           className=" container mx-auto px-4 relative z-10"
@@ -215,12 +215,12 @@ const Products: React.FC = () => {
 const allProducts: Product[] = [
   {
     id: 1,
-    name: "Premium Birch Plywood",
-    description: "High-quality architectural birch plywood with smooth surface and consistent layers.",
+    name: "Century Plywood",
+    description: "High-quality century  plywood with smooth surface and consistent layers.",
     category: "plywood",
-    subCategory: "architectural",
-    woodType: "Birch",
-    imageUrl: "/product-birch.jpg",
+    subCategory: "century",
+    woodType: "century",
+    imageUrl: "/century2.jpg",
     thickness: "18mm",
     finish: "Sanded",
     grade: "BB/BB"
@@ -299,12 +299,12 @@ const allProducts: Product[] = [
   },
   {
     id: 8,
-    name: "Architectural Maple Plywood",
-    description: "Architectural grade maple plywood with exceptional dimensional stability.",
+    name: "Sainik Plywood",
+    description: "Sainik grade maple plywood with exceptional dimensional stability.",
     category: "plywood",
-    subCategory: "architectural",
+    subCategory: "century",
     woodType: "Maple",
-    imageUrl: "/product-arch-maple.jpg",
+    imageUrl: "/century_sainik1.jpg",
     thickness: "12mm",
     finish: "Sanded",
     grade: "A/A"

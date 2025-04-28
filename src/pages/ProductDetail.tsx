@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Package } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -18,7 +17,10 @@ interface Product {
   longDescription: string;
   category: string;
   woodType: string;
-  imageUrl: string;
+  imageUrl1: string;
+  imageUrl2: string;
+  imageUrl3: string;
+  imageUrl4: string;
   thickness: string;
   finish: string;
   grade: string;
@@ -31,19 +33,17 @@ const ProductDetail: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('description');
+  const [mainImage, setMainImage] = useState('');
 
   useEffect(() => {
-    // Simulate API call to fetch product details
     setLoading(true);
-    
-    // Find product by ID
     const foundProduct = productData.find(p => p.id === Number(id));
     
     if (foundProduct) {
       setProduct(foundProduct);
+      setMainImage(foundProduct.imageUrl1);
     }
     
-    // Add slight delay to simulate loading
     setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -84,11 +84,17 @@ const ProductDetail: React.FC = () => {
     );
   }
 
+  const productImages = [
+    { id: 1, url: product.imageUrl1 },
+    { id: 2, url: product.imageUrl2 },
+    { id: 3, url: product.imageUrl3 },
+    { id: 4, url: product.imageUrl4 }
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Breadcrumb */}
       <div className="bg-earth-beige/50 py-4">
         <div className="container mx-auto px-4">
           <div className="text-sm text-muted-foreground">
@@ -101,37 +107,39 @@ const ProductDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Product Detail */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Product Image */}
             <AnimatedSection animation="fade-in" className="relative">
-              <div className="aspect-[4/3] w-full rounded-lg overflow-hidden bg-earth-beige/30">
+              <div className="aspect-[4/3] w-full rounded-lg overflow-hidden bg-earth-beige/30 flex items-center justify-center">
                 <img 
-                  src={product.imageUrl} 
+                  src={mainImage} 
                   alt={product.name} 
-                  className="w-full h-full object-cover"
+                  className="max-w-full max-h-full object-contain transition-opacity duration-300"
                 />
               </div>
 
               <div className="mt-6 grid grid-cols-4 gap-3">
-                {[1, 2, 3, 4].map((i) => (
+                {productImages.map((image) => (
                   <div 
-                    key={i} 
-                    className="aspect-square rounded-md overflow-hidden bg-earth-beige/30 cursor-pointer hover:opacity-80 transition-opacity"
+                    key={image.id}
+                    className={`aspect-square rounded-md overflow-hidden cursor-pointer transition-all flex items-center justify-center bg-earth-beige/30 ${
+                      mainImage === image.url 
+                        ? 'ring-2 ring-wood-dark scale-105' 
+                        : 'hover:opacity-80 hover:ring-1 hover:ring-wood-light'
+                    }`}
+                    onClick={() => setMainImage(image.url)}
                   >
                     <img 
-                      src={product.imageUrl} 
-                      alt={`${product.name} detail ${i}`} 
-                      className="w-full h-full object-cover"
+                      src={image.url} 
+                      alt={`${product.name} - View ${image.id}`} 
+                       className="max-w-full max-h-full object-contain"
                     />
                   </div>
                 ))}
               </div>
             </AnimatedSection>
 
-            {/* Product Info */}
             <AnimatedSection animation="slide-up" delay={200}>
               <Link 
                 to="/products"
@@ -157,7 +165,6 @@ const ProductDetail: React.FC = () => {
                 {product.description}
               </p>
 
-              {/* Tabs */}
               <div className="border-b border-muted mb-6">
                 <div className="flex space-x-8">
                   <button
@@ -204,7 +211,6 @@ const ProductDetail: React.FC = () => {
                 </div>
               </div>
 
-              {/* Tab Content */}
               <div className="mb-8">
                 {activeTab === 'description' && (
                   <div className="prose max-w-none">
@@ -252,7 +258,6 @@ const ProductDetail: React.FC = () => {
                 )}
               </div>
 
-              {/* CTA */}
               <div className="mt-8 pt-6 border-t border-muted">
                 <div className="flex flex-wrap gap-4">
                   <Link
@@ -261,7 +266,6 @@ const ProductDetail: React.FC = () => {
                   >
                     Request Quote
                   </Link>
-                 
                 </div>
                 <p className="text-sm text-muted-foreground mt-4 text-center">
                   Need assistance? Contact our team for product support.
@@ -272,7 +276,6 @@ const ProductDetail: React.FC = () => {
         </div>
       </section>
 
-      {/* Related Products */}
       <section className="py-16 bg-earth-beige/30">
         <div className="container mx-auto px-4">
           <AnimatedSection className="mb-8">
@@ -287,9 +290,10 @@ const ProductDetail: React.FC = () => {
                 <AnimatedSection key={relatedProduct.id} delay={index * 100} className="group bg-white rounded-md overflow-hidden shadow-sm hover:shadow-md transition-all hover-lift">
                   <Link to={`/products/${relatedProduct.id}`} className="block">
                     <div className="aspect-[4/3] w-full relative overflow-hidden">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                        style={{ backgroundImage: `url(${relatedProduct.imageUrl})` }}
+                      <img
+                        src={relatedProduct.imageUrl1}
+                        alt={relatedProduct.name}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                     <div className="p-4">
@@ -308,16 +312,18 @@ const ProductDetail: React.FC = () => {
   );
 };
 
-// Detailed product data
 const productData: Product[] = [
   {
     id: 1,
-    name: "Premium Birch Plywood",
-    description: "High-quality architectural birch plywood with smooth surface and consistent layers.",
-    longDescription: "Our Premium Birch Plywood features exceptional strength and a beautiful, consistent grain pattern. Each sheet is carefully manufactured using select birch veneers, bonded with high-grade adhesives under precise pressure and temperature conditions to ensure superior quality and durability.",
-    category: "Architectural",
-    woodType: "Birch",
-    imageUrl: "/product-birch.jpg",
+    name: "Century Plywood",
+    description: "High-quality Century plywood with smooth surface and consistent layers.",
+    longDescription: "Our Premium Plywood features exceptional strength and a beautiful, consistent grain pattern. Each sheet is carefully manufactured using selected woods, bonded with high-grade adhesives under precise pressure and temperature conditions to ensure superior quality and durability.",
+    category: "century",
+    woodType: "Century",
+    imageUrl1: "/century1.jpg",
+    imageUrl2: "/century2.jpg",
+    imageUrl3: "/century3.jpg",
+    imageUrl4: "/century4.jpg",
     thickness: "18mm",
     finish: "Sanded",
     grade: "BB/BB",
@@ -347,7 +353,10 @@ const productData: Product[] = [
     longDescription: "Marine Plywood is specially designed to withstand exposure to moisture and humidity. It features premium quality hardwood veneers with minimal defects, bonded with WBP (Weather and Boil Proof) adhesive. This creates a highly durable panel that resists delamination and fungal attack in humid environments.",
     category: "Marine",
     woodType: "Pine",
-    imageUrl: "/product-marine.jpg",
+    imageUrl1: "/marine1.jpg",
+    imageUrl2: "/marine2.jpg",
+    imageUrl3: "/marine3.jpg",
+    imageUrl4: "/marine4.jpg",
     thickness: "12mm",
     finish: "Sealed",
     grade: "A/B",
@@ -377,7 +386,10 @@ const productData: Product[] = [
     longDescription: "Our Furniture Grade Oak Plywood combines the natural beauty of oak with the structural advantages of plywood. Each sheet features a premium oak veneer with a consistent grain pattern, ideal for high-end furniture applications where aesthetics are as important as durability.",
     category: "Furniture",
     woodType: "Oak",
-    imageUrl: "/product-oak.jpg",
+    imageUrl1: "/oak1.jpg",
+    imageUrl2: "/oak2.jpg",
+    imageUrl3: "/oak3.jpg",
+    imageUrl4: "/oak4.jpg",
     thickness: "18mm",
     finish: "Sanded",
     grade: "A/A",
@@ -407,7 +419,10 @@ const productData: Product[] = [
     longDescription: "Decorative Walnut Plywood showcases the rich, dark tones and distinctive grain patterns that walnut is prized for. Our premium walnut veneer is carefully selected and expertly applied to create a stunning surface that adds warmth and luxury to any interior design project.",
     category: "Decorative",
     woodType: "Walnut",
-    imageUrl: "/product-walnut.jpg",
+    imageUrl1: "/walnut1.jpg",
+    imageUrl2: "/walnut2.jpg",
+    imageUrl3: "/walnut3.jpg",
+    imageUrl4: "/walnut4.jpg",
     thickness: "6mm",
     finish: "Polished",
     grade: "A/A",
@@ -437,7 +452,10 @@ const productData: Product[] = [
     longDescription: "Our Structural Plywood is engineered for maximum strength and durability in construction applications. It features cross-laminated veneers that distribute loads evenly, providing superior dimensional stability and resistance to warping, even under variable environmental conditions.",
     category: "Structural",
     woodType: "Pine",
-    imageUrl: "/product-structural.jpg",
+    imageUrl1: "/structural1.jpg",
+    imageUrl2: "/structural2.jpg",
+    imageUrl3: "/structural3.jpg",
+    imageUrl4: "/structural4.jpg",
     thickness: "24mm",
     finish: "Rough",
     grade: "C/C",
@@ -467,7 +485,10 @@ const productData: Product[] = [
     longDescription: "Cherry Veneer Plywood offers the warm reddish-brown tones and smooth grain pattern that cherry wood is famous for. Our premium cherry veneer is carefully selected for consistency in color and grain, creating a luxurious surface perfect for high-end furniture and cabinetry.",
     category: "Decorative",
     woodType: "Cherry",
-    imageUrl: "/product-cherry.jpg",
+    imageUrl1: "/cherry1.jpg",
+    imageUrl2: "/cherry2.jpg",
+    imageUrl3: "/cherry3.jpg",
+    imageUrl4: "/cherry4.jpg",
     thickness: "12mm",
     finish: "Polished",
     grade: "A/B",
@@ -497,7 +518,10 @@ const productData: Product[] = [
     longDescription: "Maple Furniture Board features the bright, consistent appearance and close grain pattern that maple is known for. This premium plywood offers excellent machining properties and takes finishes beautifully, making it ideal for furniture pieces where a clean, contemporary look is desired.",
     category: "Furniture",
     woodType: "Maple",
-    imageUrl: "/product-maple.jpg",
+    imageUrl1: "/maple1.jpg",
+    imageUrl2: "/maple2.jpg",
+    imageUrl3: "/maple3.jpg",
+    imageUrl4: "/maple4.jpg",
     thickness: "18mm",
     finish: "Sanded",
     grade: "BB/BB",
@@ -527,7 +551,10 @@ const productData: Product[] = [
     longDescription: "Our Architectural Maple Plywood is specifically manufactured for high-end architectural applications where appearance and stability are crucial. The premium maple veneer provides a clean, contemporary look that architects and designers prefer for modern interiors.",
     category: "Architectural",
     woodType: "Maple",
-    imageUrl: "/product-arch-maple.jpg",
+    imageUrl1: "/arch-maple1.jpg",
+    imageUrl2: "/arch-maple2.jpg",
+    imageUrl3: "/arch-maple3.jpg",
+    imageUrl4: "/arch-maple4.jpg",
     thickness: "12mm",
     finish: "Sanded",
     grade: "A/A",
@@ -547,7 +574,7 @@ const productData: Product[] = [
       "Custom millwork",
       "Designer furniture",
       "Retail displays",
-      "Museum exhibits"
+      "Museum exhibits" 
     ]
   },
   {
@@ -557,7 +584,10 @@ const productData: Product[] = [
     longDescription: "Marine Grade Birch combines the natural beauty and strength of birch with superior water resistance. Each sheet is manufactured using carefully selected birch veneers bonded with WBP (Weather and Boil Proof) adhesive to create a durable panel that withstands exposure to moisture and humidity.",
     category: "Marine",
     woodType: "Birch",
-    imageUrl: "/product-marine-birch.jpg",
+    imageUrl1: "/marine-birch1.jpg",
+    imageUrl2: "/marine-birch2.jpg",
+    imageUrl3: "/marine-birch3.jpg",
+    imageUrl4: "/marine-birch4.jpg",
     thickness: "18mm",
     finish: "Sealed",
     grade: "AB/B",

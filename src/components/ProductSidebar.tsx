@@ -25,7 +25,7 @@ const productCategories = [
     title: 'Plywood',
     icon: <Layers className="w-5 h-5" />,
     items: [
-      { id: 'architectural', name: 'Architectural' },
+      { id: 'century', name: 'Century' },
       { id: 'marine', name: 'Marine' },
       { id: 'furniture', name: 'Furniture' },
       { id: 'decorative', name: 'Decorative' },
