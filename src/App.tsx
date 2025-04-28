@@ -14,7 +14,6 @@ import CustomProducts from "./pages/CustomProducts";
 import AboutUs from "./pages/AboutUs";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
 import PageLoader from "./components/PageLoader";
 
 const queryClient = new QueryClient();
@@ -44,7 +43,6 @@ function AppRoutes() {
           <Route path="/custom-products" element={<CustomProducts />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
